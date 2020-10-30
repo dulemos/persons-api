@@ -31,6 +31,7 @@ export const apiGetById = async (req, res) => {
 
 export const apiSave = async (req, res) => {
     try{
+        console.log(req.body)
         const data = await PersonsModel.create(req.body);
         return success(req, res, {data: data})
     } catch (e) {
@@ -47,8 +48,11 @@ export const apiUpdate = async (req, res) => {
         const {id} = req.params;
         const update = req.body;
 
-        const data = await PersonsModel.findOneAndUpdate({_id: id}, {update})
-        return success(req, res, update)
+        const data = await PersonsModel.findById(id);
+        await PersonsModel.updateOne({_id: id}, update);
+        data.save()
+        const response = await PersonsModel.findById(id);
+        return success(req, res, response)
     } catch (e) {
         return failure(req, res, {message: "Invalid ID"}, 400)
     }

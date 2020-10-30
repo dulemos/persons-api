@@ -1,6 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import * as PersonsController from '../controllers/PersonsController.js'
+import cors from 'cors'
 
 const app = express();
 const router = express.Router();
@@ -8,6 +9,8 @@ const router = express.Router();
 const { json } = bodyParser;
 
 router.use(json());
+
+app.use(cors());
 
 router.get('/ping', (req, res) => {
     res.status(201).send({
